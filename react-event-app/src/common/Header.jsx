@@ -1,5 +1,5 @@
 import React,{ Component } from "react"
-import {BrowserRouter,Routes,Route} from "react-router-dom"
+import {BrowserRouter,Routes,Route, Link} from "react-router-dom"
 import Home from "../components/Home";
 
 
@@ -104,12 +104,13 @@ class Header extends Component {
                                             <img src="assets/images/logo/01.png" alt="logo" />
                                         </a>
                                         <ul className="main-menu d-flex align-items-center">
-                                            <li className="active"><a href="/" >Home</a></li>
+                                            <li className="active"><Link to={Home}>Home</Link></li>
                                             <li><a href="speaker-profile.html">News & Article</a></li>
                                             <li><a href="#">Events</a>
                                                 <ul className="submenu">
                                                     <li><a href="#">On Going Events</a></li>
                                                     <li><a href="#">Passed Events</a></li>
+                                                    <li><a href="#">All Events</a></li>
                                                 </ul>
                                             </li>
                                             <li className="head-contact d-none d-xl-block"><a href="#"><i className="fas fa-phone"></i> +8801619-139091</a></li>

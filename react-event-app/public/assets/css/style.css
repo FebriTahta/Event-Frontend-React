@@ -926,7 +926,7 @@
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  height: 100vh;
+  height: 20vh;
   position: relative;
 }
 .banner-section.style-3 .banner-content-area {
@@ -954,30 +954,38 @@
   line-height: 1.625rem;
 }
 .banner-section.style-3 .banner-content-area .banner-content .banner-search {
-  max-width: 730px;
+  max-width: 420px;
   margin: 0 auto;
   position: relative;
 }
 .banner-section.style-3 .banner-content-area .banner-content .banner-search input {
   margin: 0;
-  padding: 24px;
+  max-width: 420px;
+  /* padding: 14px; */
   border-radius: 50px;
-  margin-bottom: 40px;
-  margin-top: 30px;
+  margin-bottom: 20px;
+  /* margin-top: 30px; */
 }
 .banner-section.style-3 .banner-content-area .banner-content .banner-search i {
   position: absolute;
   top: 0;
   right: 0;
-  padding: 27px;
+  padding-right: 40px;
+  padding-top: 30px;
   color: #383a50;
   font-size: 1.25rem;
   cursor: pointer;
 }
 .banner-section.style-3 .banner-content-area .banner-content .banner-search .btn-defult {
   outline: none;
-  padding: 20px 35px;
+  padding: 15px 35px;
 }
+
+#uploadBtn {
+  max-width: 420px;
+  
+}
+
 .banner-section.style-4 {
   background: url(../../assets/images/banner/02.png) #fff;
   background-size: cover;
