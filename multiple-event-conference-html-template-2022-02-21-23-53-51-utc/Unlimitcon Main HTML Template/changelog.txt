@@ -1,0 +1,9 @@
+Unlimitcon - Multiple Event, Conference HTML Template.
+
+
+Changelog:
+Version: 3.0.0  Date: 30-08-2021
+1. Add mailchimp
+2. Add contact.php
+3. Minor css improve
+4. Add Js file improve
