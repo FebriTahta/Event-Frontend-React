@@ -1,8 +1,10 @@
 import React, { Component } from "react"
 import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom"
 import DetailE from "../components/DetailEvent";
+import DetailN from "../components/DaftarNews";
 import Home from "../components/Home";
 import { NavLink } from "react-router-dom";
+import Logo from '../logo1.png';
 
 class Header extends Component {
 
@@ -12,13 +14,13 @@ class Header extends Component {
         let activeClassName = "#fd3d6b";
 
         return (
-            <BrowserRouter>
+            // <BrowserRouter>
                 <div>
 
                     <div className="mobile-menu">
                         <nav className="mobile-header primary-menu d-lg-none" style={{ backgroundColor:"white" }}>
                             <div className="header-logo">
-                                <a href="index.html" className="logo"><img src="assets/images/logo/01.png" alt="logo"/></a>
+                                <a className="logo"><img src={Logo} style={{maxWidth:"200px"}} alt="logo"/></a>
                             </div>
                             <div className="header-bar" id="open-button">
                                 <span></span>
@@ -36,7 +38,7 @@ class Header extends Component {
                                 <div className="mobile-menu-area d-lg-none">
                                     <div className="mobile-menu-area-inner" id="scrollbar">
                                         <div className="header-bar m-menu-bar">
-                                            <a href="index.html" className="logo"><img src="assets/images/logo/01.png" alt="logo"/></a>
+                                            <a href="#" className="logo"><img src={Logo} style={{maxWidth:"150px"}} alt="logo"/></a>
                                             <div className="close-button" id="close-button"></div>
                                         </div>
                                         <ul className="m-menu">
@@ -93,8 +95,8 @@ class Header extends Component {
                                     <div className="menu-area">
                                         <div className="row no-gutters justify-content-between align-items-center">
                                             <a href="index.html" className="logo">
-                                                <img src="assets/images/logo/01.png" alt="logo"/>
-                                                    <img src="assets/images/logo/01.png" alt="logo"/>
+                                                <img src={Logo} style={{maxWidth:"200px"}} alt="logo"/>
+                                                    <img src={Logo} style={{maxWidth:"200px"}} alt="logo"/>
                                                     </a>
                                                     <div className="right d-flex align-items-center">
                                                         <ul className="main-menu d-flex align-items-center">
@@ -116,14 +118,15 @@ class Header extends Component {
                         </div>
                     </div>
 
-                    <Routes>
+                    {/* <Routes>
                         <Route path="/" element={<Navigate to="/home" replace />}></Route>
                         <Route path="/home" element={<Home />}></Route>
                         <Route path="/detail-event" element={<DetailE />}></Route>
-                    </Routes>
+                        <Route path="news/:slug" element={<DetailN />}></Route>
+                    </Routes> */}
 
                 </div>
-            </BrowserRouter>
+            // </BrowserRouter>
 
 
         )

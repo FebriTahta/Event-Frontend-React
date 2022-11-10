@@ -1,31 +1,54 @@
-import { type } from "@testing-library/user-event/dist/type";
 import React, { Component } from "react";
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
-import BlockEvent from "../item/BlockEvent";
+import { useNavigate } from "react-router-dom";
+import Header from '../common/Header';
+import Footer from '../common/Footer';
+import axios from 'axios';
 // import BlockEvent from '../item/BlockEvent';
-import FilterHomeKategori from '../item/FilterHomeKategori';
+// import FilterHomeKategori from '../item/FilterHomeKategori';
 
 // class Home extends Component {
 function Home() {
-    const [event, setEvent] = useState([]);
+
+    // const [event, setEvent] = useState([]);
+    const [news, setNews] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        daftarEvent();
+        // daftarEvent();
+        daftarNews();
     }, []);
 
-    const daftarEvent = async () => {
-        const data = await fetch("http://127.0.0.1:8000/api/daftar-event-api");
-        const dataEvents = await data.json();
-        console.log(dataEvents);
-        setEvent(dataEvents.data);
-    };
+    // const daftarEvent = async () => {
+    //     const data = await fetch("http://127.0.0.1:8000/api/daftar-event-api");
+    //     const dataEvents = await data.json();
+    //     console.log(dataEvents);
+    //     setEvent(dataEvents.data);
+    // };
+
+    const daftarNews = async () => {
+        // return await axios
+        //     .get("https://nurulfalah.org/api/list-berita2")
+        //     .then((response) => setNews(response.data))
+        //     .catch((err) => console.log(err))
+        const data2 = await fetch("https://nurulfalah.org/api/list-berita2");
+        const datas = await data2.json();
+
+        setNews(datas.data);
+        console.log(datas.data);
+    }
+
+    const handleGoToDetailNews = (slug) => {
+        console.log(slug);
+        navigate(`/news/${slug}`);
+    }
+
 
     return (
         <div>
-
+            <Header />
             <div className="page-header-section post-title style-1" style={{ backgroundImage: "url(bg3.png)", backgroundColor: "white" }} >
-                <div className="overlay">
+                <div className="overlay" >
                     <div className="page-header-content">
                         <div className="container container-1310">
                             <div className="page-header-content-inner" style={{ marginBottom: "20px" }}>
@@ -63,7 +86,10 @@ function Home() {
                         <div className="col-lg-12 clo-sm-12 sticky-widget">
                             <div className="post-item-wrapper">
                                 <div className="row">
-                                    {event.map((dataEvents) => {
+
+
+
+                                    {/* {event.map((dataEvents) => {
                                         if (dataEvents.event_name.length < 30) {
                                             return <div className="col-md-4 col-6" key={dataEvents.id} style={{ marginBottom: "50px", }}>
                                                 <div className="post-item" >
@@ -89,7 +115,7 @@ function Home() {
                                                     </div>
                                                 </div>
                                             </div>
-                                            
+
                                         } else {
                                             return <div className="col-md-4 col-6" key={dataEvents.id} style={{ marginBottom: "50px", }}>
                                                 <div className="post-item" >
@@ -102,15 +128,13 @@ function Home() {
                                                                 return <span className="badge badge-danger" key={index} style={{ marginRight: "5px", padding: "5px" }}>{dataKategori.kategori_name}</span>
                                                             })}
                                                         </ul>
-                                                        <NavLink to="/detail-event" dataEvent={dataEvents}>
-                                                            <a style={{ marginTop: "10px", padding: "0" }}>
-                                                                <h5 style={{ lineHeight: "22px", fontSize: "16px" }}>
-                                                                    {dataEvents.event_name.substring(0, 60)}..
-                                                                </h5>
-                                                                <br />
-                                                            </a>
-                                                        </NavLink>
-                                                        
+                                                        <a style={{ marginTop: "10px", padding: "0" }}>
+                                                            <h5 style={{ lineHeight: "22px", fontSize: "16px" }}>
+                                                                {dataEvents.event_name.substring(0, 60)}..
+                                                            </h5>
+                                                            <br />
+                                                        </a>
+
                                                         <div style={{ fontSize: "12px", margin: "0", padding: "0" }}>
                                                             {dataEvents.event_source} <br /> {dataEvents.event_rank} | {dataEvents.event_deadline}
                                                         </div>
@@ -119,7 +143,7 @@ function Home() {
                                             </div>
                                         }
 
-                                    })}
+                                    })} */}
                                 </div>
                             </div>
                         </div>
@@ -154,69 +178,62 @@ function Home() {
                     </div>
                 </div>
                 <div className="ticker  wow fadeInUp animated" data-wow-duration="1s" data-wow-delay=".1s" data-duration="70" data-loop="2" data-effect="linear" style={{ overflow: "hidden", visibility: "visible", animationDuration: "1s", animationDelay: "0.1s" }}>
-                    <span
-                        style={{ whiteSpace: "nowrap", position: "relative", transition: "70s linear 0s", left: "-4684px" }}>Info Lomba Official Info Lomba Official</span>
+                    <marquee scrollamount="20" behavior="alternate">Info Lomba Official Info Lomba Official</marquee>
                 </div>
             </section>
 
             <section className="event-venues-about style-1" style={{ marginBottom: "100px" }}>
                 <div className="container container-1310">
                     <div className="section-header">
-                        <p>Tips & Trick</p>
+                        <u style={{ float: "right" }}>Baca Tips Lainnya</u >
                         <h2>Tips Seputar Jadi Juara</h2>
                     </div>
                     <div className="section-wraper">
-                        <div className="event-venue-item" style={{ marginBottom: "10px" }}>
-                            <div className="event-venue-item-inner" style={{ boxShadow: "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px", borderRadius: "10px" }}>
-                                <div className="row">
-                                    <div className="col-md-4 col-4" style={{ marginRight: "0", paddingRight: "0" }}>
-                                        <div className="event-venue-thumb" style={{ borderTopLeftRadius: "10px", borderBottomLeftRadius: "10px" }}>
-                                            <a href="#"><img src="assets/images/venue/03.png" alt="venue" style={{ height: "100%" }} /></a>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-8 col-8" style={{ marginLeft: "0", paddingLeft: "10px" }}>
-                                        <div className="event-venue-content" style={{ marginTop: "0", paddingTop: "0" }}>
-                                            <a href="#" style={{ padding: "0", margin: "0" }}><h5 style={{ fontSize: "20px" }}>World Business Conference</h5></a>
-                                            <span style={{ fontSize: "14px", padding: "0", margin: "0" }}>By admin</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="event-venue-item" style={{ marginBottom: "10px" }}>
-                            <div className="event-venue-item-inner" style={{ boxShadow: "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px", borderRadius: "10px" }}>
-                                <div className="row">
-                                    <div className="col-md-4 col-4" style={{ marginRight: "0", paddingRight: "0" }}>
-                                        <div className="event-venue-thumb" style={{ borderTopLeftRadius: "10px", borderBottomLeftRadius: "10px" }}>
-                                            <a href="#"><img src="assets/images/venue/03.png" alt="venue" style={{ height: "100%" }} /></a>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-8 col-8" style={{ marginLeft: "0", paddingLeft: "10px" }}>
-                                        <div className="event-venue-content" style={{ marginTop: "0", paddingTop: "0" }}>
-                                            <a href="#" style={{ padding: "0", margin: "0" }}><h5 style={{ fontSize: "20px" }}>World Business Conference</h5></a>
-                                            <span style={{ fontSize: "14px", padding: "0", margin: "0" }}>By admin</span>
+
+                        {news.map((a, i) => {
+
+                            if (a.judul.length < 30) {
+                                return <div className="event-venue-item" key={i} style={{ marginBottom: "10px" }}>
+                                    <div className="event-venue-item-inner" style={{ boxShadow: "rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px", borderRadius: "10px" }}>
+                                        <div className="row">
+                                            <div className="col-md-4 col-4" style={{ marginRight: "0", paddingRight: "0" }}>
+                                                <div className="event-venue-thumb" style={{ borderTopLeftRadius: "10px", borderBottomLeftRadius: "10px" }}>
+                                                    <a href="#" onClick={()=>handleGoToDetailNews(a.slug)}><img src="assets/images/venue/03.png" alt="venue" style={{ height: "100%" }} /></a>
+                                                </div>
+                                            </div>
+                                            <div className="col-md-8 col-8" style={{ marginLeft: "0", paddingLeft: "10px" }}>
+                                                <div className="event-venue-content" style={{ marginTop: "0", paddingTop: "0" }}>
+                                                    <a href="#" onClick={()=>handleGoToDetailNews(a.slug)} style={{ padding: "0", margin: "0" }}><h5 style={{ fontSize: "20px" }}>{a.judul}</h5></a>
+                                                    <span style={{ fontSize: "14px", padding: "0", margin: "0" }}>By admin</span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div className="event-venue-item" style={{ marginBottom: "10px" }}>
-                            <div className="event-venue-item-inner" style={{ boxShadow: "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px", borderRadius: "10px" }}>
-                                <div className="row">
-                                    <div className="col-md-4 col-4" style={{ marginRight: "0", paddingRight: "0" }}>
-                                        <div className="event-venue-thumb" style={{ borderTopLeftRadius: "10px", borderBottomLeftRadius: "10px" }}>
-                                            <a href="#"><img src="assets/images/venue/03.png" alt="venue" style={{ height: "100%" }} /></a>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-8 col-8" style={{ marginLeft: "0", paddingLeft: "10px" }}>
-                                        <div className="event-venue-content" style={{ marginTop: "0", paddingTop: "0" }}>
-                                            <a href="#" style={{ padding: "0", margin: "0" }}><h5 style={{ fontSize: "20px" }}>World Business Conference</h5></a>
-                                            <span style={{ fontSize: "14px", padding: "0", margin: "0" }}>By admin</span>
+                            }
+                            else {
+                                return <div className="event-venue-item" key={i} style={{ marginBottom: "10px" }}>
+                                    <div className="event-venue-item-inner" style={{ boxShadow: "rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px", borderRadius: "10px" }}>
+                                        <div className="row">
+                                            <div className="col-md-4 col-4" style={{ marginRight: "0", paddingRight: "0" }}>
+                                                <div className="event-venue-thumb" style={{ borderTopLeftRadius: "10px", borderBottomLeftRadius: "10px" }}>
+                                                    <a href="#" onClick={()=>handleGoToDetailNews(a.slug)}><img src="assets/images/venue/03.png" alt="venue" style={{ height: "100%" }} /></a>
+                                                </div>
+                                            </div>
+                                            <div className="col-md-8 col-8" style={{ marginLeft: "0", paddingLeft: "10px" }}>
+                                                <div className="event-venue-content" style={{ marginTop: "0", paddingTop: "0" }}>
+                                                    <a href="#" onClick={()=>handleGoToDetailNews(a.slug)} style={{ padding: "0", margin: "0" }}><h5 style={{ fontSize: "20px" }}>{a.judul.substring(0, 35)}..</h5></a>
+                                                    <span style={{ fontSize: "14px", padding: "0", margin: "0" }}>By admin</span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            }
+
+
+                        }
+                        )}
                     </div>
                 </div>
             </section>
@@ -275,9 +292,14 @@ function Home() {
                     </div>
                 </div>
             </div>
+            <Footer />
         </div >
+        
     )
 
+
 }
+
+
 
 export default Home
