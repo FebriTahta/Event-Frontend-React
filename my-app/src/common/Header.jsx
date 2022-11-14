@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom"
 import DetailE from "../components/DetailEvent";
-import DetailN from "../components/DaftarNews";
+import DetailN from "../components/DetailBlog";
 import Home from "../components/Home";
 import { NavLink } from "react-router-dom";
 import Logo from '../logo1.png';
@@ -104,9 +104,11 @@ class Header extends Component {
                                                                 <NavLink to="/home" style={({ isActive }) => isActive ? activeLink : undefined}>Home</NavLink>
                                                             </li>
                                                             <li>
-                                                                <NavLink to="/detail-event" style={({ isActive }) => isActive ? activeLink : undefined}>News & Article</NavLink>
+                                                                <NavLink to="/blog" style={({ isActive }) => isActive ? activeLink : undefined}>News & Article</NavLink>
                                                             </li>
-                                                            <li><NavLink to="/detail-event">Kerja Sama</NavLink></li>
+                                                            <li>
+                                                                <NavLink to="/detail-event" style={({ isActive }) => isActive ? activeLink : undefined}>Kerj Sama</NavLink>
+                                                            </li>
                                                             <li><a href="speaker-profile.html">Jadi Penulis</a></li>
                                                         </ul>
                                                         <a href="#" className="reg-head d-none d-xl-block">Upload Lomba</a>

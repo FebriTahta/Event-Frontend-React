@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import '../index.css';
+import '../skeleton.css';
 import Header from '../common/Header';
 import Footer from '../common/Footer';
+import Skeleton from './Skeleton';
 import axios from 'axios';
 // import BlockEvent from '../item/BlockEvent';
 // import FilterHomeKategori from '../item/FilterHomeKategori';
@@ -13,6 +16,7 @@ function Home() {
     // const [event, setEvent] = useState([]);
     const [news, setNews] = useState([]);
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         // daftarEvent();
@@ -31,11 +35,13 @@ function Home() {
         //     .get("https://nurulfalah.org/api/list-berita2")
         //     .then((response) => setNews(response.data))
         //     .catch((err) => console.log(err))
+        setIsLoading(true);
+        try {
         const data2 = await fetch("https://nurulfalah.org/api/list-berita2");
         const datas = await data2.json();
-
         setNews(datas.data);
-        console.log(datas.data);
+        } catch (err) {}
+        setIsLoading(false);
     }
 
     const handleGoToDetailNews = (slug) => {
@@ -185,12 +191,14 @@ function Home() {
             <section className="event-venues-about style-1" style={{ marginBottom: "100px" }}>
                 <div className="container container-1310">
                     <div className="section-header">
-                        <u style={{ float: "right" }}>Baca Tips Lainnya</u >
                         <h2>Tips Seputar Jadi Juara</h2>
                     </div>
                     <div className="section-wraper">
 
-                        {news.map((a, i) => {
+                        { isLoading ? (
+                            <Skeleton type="custom" />
+                        ) : (    
+                        news.map((a, i) => {
 
                             if (a.judul.length < 30) {
                                 return <div className="event-venue-item" key={i} style={{ marginBottom: "10px" }}>
@@ -203,7 +211,7 @@ function Home() {
                                             </div>
                                             <div className="col-md-8 col-8" style={{ marginLeft: "0", paddingLeft: "10px" }}>
                                                 <div className="event-venue-content" style={{ marginTop: "0", paddingTop: "0" }}>
-                                                    <a href="#" onClick={()=>handleGoToDetailNews(a.slug)} style={{ padding: "0", margin: "0" }}><h5 style={{ fontSize: "20px" }}>{a.judul}</h5></a>
+                                                    <a href="#" onClick={()=>handleGoToDetailNews(a.slug)} style={{ padding: "0", margin: "0" }}><h5 style={{ fontSize: "20px" }} className="judul-blog">{a.judul}</h5></a>
                                                     <span style={{ fontSize: "14px", padding: "0", margin: "0" }}>By admin</span>
                                                 </div>
                                             </div>
@@ -222,7 +230,7 @@ function Home() {
                                             </div>
                                             <div className="col-md-8 col-8" style={{ marginLeft: "0", paddingLeft: "10px" }}>
                                                 <div className="event-venue-content" style={{ marginTop: "0", paddingTop: "0" }}>
-                                                    <a href="#" onClick={()=>handleGoToDetailNews(a.slug)} style={{ padding: "0", margin: "0" }}><h5 style={{ fontSize: "20px" }}>{a.judul.substring(0, 35)}..</h5></a>
+                                                    <a href="#" onClick={()=>handleGoToDetailNews(a.slug)} style={{ padding: "0", margin: "0" }}><h5 style={{ fontSize: "20px" }} className="judul-blog">{a.judul.substring(0, 35)}..</h5></a>
                                                     <span style={{ fontSize: "14px", padding: "0", margin: "0" }}>By admin</span>
                                                 </div>
                                             </div>
@@ -230,9 +238,7 @@ function Home() {
                                     </div>
                                 </div>
                             }
-
-
-                        }
+                        })
                         )}
                     </div>
                 </div>

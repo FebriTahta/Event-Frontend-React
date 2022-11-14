@@ -12,10 +12,46 @@ code {
     monospace;
 } */
 
+
+
+
+
+
+
+
 /* home */
 .post-thumb img {
   width: 100%;
-  height: 50vh;
+  height: 40vh;
   object-fit: cover;
+}
+
+/* home blog bawah */
+@media screen and (max-width: 1000px) {
+  .judul-blog {
+    font-size: 16px !important;
+  }
+}
+
+/* daftar blog */
+@media screen and (max-width: 1000px) {
+  #text-heading-blog {
+    font-size: 45px !important;
+  }
+
+  #text-heading-blog2 {
+    margin-top: -5px !important;
+  }
+
+  #text-heading-blog-cover {
+    line-height: 40px !important;
+  }
   
+  #hero-heading-blog {
+    margin-top: -210px !important;
+  }
+
+  .blog-section {
+    margin-top: -250px !important;
+  }
 }
