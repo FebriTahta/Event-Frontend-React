@@ -28,10 +28,10 @@ function App() {
    
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/home" replace />}></Route>
+        <Route path="/" element={<Navigate to="/blog" replace />}></Route>
         <Route path="/home" element={<Home />}></Route>
         <Route path="/detail-event" element={<DetailE />}></Route>
-        <Route path="/news/:slug" element={<DetailB />}></Route>
+        <Route path="/blog/:slug" element={<DetailB />}></Route>
         <Route path="/blog" element={<DaftarB />}></Route>
       </Routes>
     </BrowserRouter>

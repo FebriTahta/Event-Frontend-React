@@ -18,14 +18,13 @@ function DetailB() {
     const { slug } = useParams();
 
     useEffect(() => {
-        fetch(`https://nurulfalah.org/api/detail/${slug}`)
+        fetch(`https://event.coffinashop.com/api/blog/${slug}`)
             .then((response) => response.json())
             .then((data) => {
                 setBlog(data.data);
             })
             .catch((err) => console.log(err));
         console.log(blog);
-
         daftarNews();
     }, [slug]);
 
@@ -58,10 +57,10 @@ function DetailB() {
                         <div className="container container-1310">
                             <div className="page-header-content-inner">
                                 <div className="page-title" style={{ paddingLeft: "15%", paddingRight: "15%", marginTop: "150px" }}>
-                                    <span className="title-text" style={{ color: "#333333" }}>{blog.judul}</span>
+                                    <span className="title-text" style={{ color: "#333333", fontSize:"40px", lineHeight:"50px" }}>{blog.news_title}</span>
                                 </div>
                                 <ol className="breadcrumb">
-                                    <li className="active" style={{ color: "grey", fontSize: "20px" }}>Oleh Anang Khoiri</li>
+                                    <li className="active" style={{ color: "grey", fontSize: "20px" }}>Oleh {blog.username}</li>
                                 </ol>
                                 <a href="#" type="button" style={{
                                     backgroundColor: 'rgb(42, 149, 236)', padding: '7px', borderRadius: '50px', color: 'white', maxWidth: "680px"
@@ -84,7 +83,7 @@ function DetailB() {
                         <div className="col-lg-12 clo-sm-12">
                             <div className="post-item-wrapper">
                                 <div className="post-item" style={{ paddingLeft: "10%", paddingRight: "10%" }}>
-                                    <img src={blog.thumbnail} style={{ maxWidth: "100%", marginBottom: "50px", marginTop: "50px" }} alt="blog-single" />
+                                    <img src={blog.image} style={{ width: "100%", marginBottom: "50px", marginTop: "50px" }} alt="blog-single" />
                                     <div className="post-content entry-content" style={{ padding: "0px" }}>
                                         <div className="post-content-inner">
                                             <p>Whereas media application. Distinctive parall functionalize mindshare rather than bricks-and-clicks schema. Dramatic reconceptualsynergistic channel whereas tactic communi repurpose granular quality. Competent syndicate vertical infomediaries with inexpensive methodologies.</p>
