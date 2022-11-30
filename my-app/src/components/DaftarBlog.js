@@ -44,12 +44,33 @@ function DaftarB() {
         navigate(`/blog/${slug}`);
     }
 
+    const fetchPages = async (currnetPage) => {
+        const response = await fetch(`https://event.coffinashop.com/api/daftar-blog?page=${currnetPage}`);
+        const data = await response.json();
+        return data;
+    }
+
+    const onPageChange = (changepage) => {
+        console.log(changepage);
+       
+    }
+
     const noBlog = () => {
         return (
             <div>
                 <h5>Belum Ada Blog / Tulisan</h5>
             </div>
         )
+    }
+
+    const paginate = () => {
+        let row = [];
+        for (let index = 1; index <= blogs.last_page; index++) {
+            
+            row.push(index)
+        }
+        console.log(row);
+        return row;
     }
 
     return (
@@ -85,18 +106,18 @@ function DaftarB() {
                                         blogs.data.map((a, i) => {
                                             if (!a) {
                                                 return noBlog();
-                                            }else{
+                                            } else {
                                                 if (a.news_title.length < 45) {
                                                     return <div className="col-md-6" key={i} >
                                                         <div className="post-item" style={{ boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px' }}>
                                                             <div className="post-thumb-1" >
-                                                                <a href="#" onClick={()=>handleGoToDetailNews(a.news_slug)}><img src={a.thumbnail} style={{ borderTopLeftRadius: "10px", borderTopRightRadius: "10px" }} alt="blog" /></a>
+                                                                <a href="#" onClick={() => handleGoToDetailNews(a.news_slug)}><img src={a.thumbnail} style={{ borderTopLeftRadius: "10px", borderTopRightRadius: "10px" }} alt="blog" /></a>
                                                             </div>
                                                             <div className="post-content" >
-                                                                <a href="#" onClick={()=>handleGoToDetailNews(a.news_slug)} className="cata-icon">
+                                                                <a href="#" onClick={() => handleGoToDetailNews(a.news_slug)} className="cata-icon">
                                                                     <i className="fas fa-image" />
                                                                 </a>
-                                                                <a href="#" onClick={()=>handleGoToDetailNews(a.news_slug)} style={{ marginTop: "15px" }}>
+                                                                <a href="#" onClick={() => handleGoToDetailNews(a.news_slug)} style={{ marginTop: "15px" }}>
                                                                     <h5>{a.news_title}</h5>
                                                                 </a>
                                                                 <div className="meta-post" >
@@ -105,19 +126,19 @@ function DaftarB() {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                }else {
+                                                } else {
                                                     return <div className="col-md-6" key={i} >
                                                         <div className="post-item" style={{ boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px' }}>
                                                             <div className="post-thumb-1" >
-                                                                <a href="#" onClick={()=>handleGoToDetailNews(a.news_slug)}><img src={a.image} style={{ borderTopLeftRadius: "10px", borderTopRightRadius: "10px" }} alt="blog" /></a>
+                                                                <a href="#" onClick={() => handleGoToDetailNews(a.news_slug)}><img src={a.image} style={{ borderTopLeftRadius: "10px", borderTopRightRadius: "10px" }} alt="blog" /></a>
                                                             </div>
                                                             <div className="post-content" >
-                                                                <a href="#" onClick={()=>handleGoToDetailNews(a.news_slug)} className="cata-icon">
+                                                                <a href="#" onClick={() => handleGoToDetailNews(a.news_slug)} className="cata-icon">
                                                                     <i className="fas fa-image" />
                                                                 </a>
-                                                                
-                                                                <a href="#" onClick={()=>handleGoToDetailNews(a.news_slug)} style={{ marginTop: "15px" }}>
-                                                                    <h5>{a.news_title.substring(0 , 45)}...</h5>
+
+                                                                <a href="#" onClick={() => handleGoToDetailNews(a.news_slug)} style={{ marginTop: "15px" }}>
+                                                                    <h5>{a.news_title.substring(0, 45)}...</h5>
                                                                 </a>
                                                                 <div className="meta-post" >
                                                                     <span className="by">Posted By <a className="name" href="#">{a.username}</a> at <a className="date" href="#">{a.created_at}</a></span>
@@ -133,8 +154,20 @@ function DaftarB() {
 
 
                                 </div>
-                                {/* Blog Pagination */}
-                                <BlogP data={blogs} />
+                                {/* <BlogP data={blogs} /> */}
+
+                                <div className="pagination-area d-flex flex-wrap justify-content-center">
+                                    <ul className="pagination d-flex flex-wrap m-0">
+                                    <li className="prev"><a href="#"><span>« previous</span></a></li>
+                                    
+                                    <li><a href="#" className="active d-md-block">1</a></li>
+                                    <li><a href="#" className="d-none d-md-block">2</a></li>
+                                    <li><a href="#" className="d-none d-md-block">3</a></li>
+                                    <li className="dot">....</li>
+                                    <li><a href="#" className="d-none d-md-block">4</a></li>
+                                        <li className="next"><a href="#" onClick={() => onPageChange(blogs.current_page)}><span>next »</span></a></li>
+                                    </ul>
+                                </div>
 
                             </div>
                         </div>
@@ -194,13 +227,13 @@ function DaftarB() {
                                                     {
                                                         pops.map((a, i) => {
                                                             return <div key={i} className="comment-list d-flex">
-                                                            <div className="cm-icon" style={{ maxHeight:"120px" }}>
-                                                                <img style={{ height:"70px", minWidth:"100px", borderRadius:"5px" }} src={a.thumbnail} alt="blog" />
+                                                                <div className="cm-icon" style={{ maxHeight: "120px" }}>
+                                                                    <img style={{ height: "70px", minWidth: "100px", borderRadius: "5px" }} src={a.thumbnail} alt="blog" />
+                                                                </div>
+                                                                <div className="cm-text" style={{ lineHeight: "17px" }}>
+                                                                    <span style={{ fontSize: "13px" }}>{a.news_title}</span>
+                                                                </div>
                                                             </div>
-                                                            <div className="cm-text" style={{ lineHeight:"17px" }}>
-                                                                <span style={{ fontSize:"13px" }}>{a.news_title}</span>
-                                                            </div>
-                                                        </div>
                                                         })
                                                     }
                                                 </div>
