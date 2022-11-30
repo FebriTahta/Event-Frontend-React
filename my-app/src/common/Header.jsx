@@ -104,7 +104,7 @@ class Header extends Component {
                                                                 <NavLink to="/home" style={({ isActive }) => isActive ? activeLink : undefined}>Home</NavLink>
                                                             </li>
                                                             <li>
-                                                                <NavLink to="/blog" style={({ isActive }) => isActive ? activeLink : undefined}>News & Article</NavLink>
+                                                                <NavLink to="/daftar-blog" style={({ isActive }) => isActive ? activeLink : undefined}>News & Article</NavLink>
                                                             </li>
                                                             <li>
                                                                 <NavLink to="/detail-event" style={({ isActive }) => isActive ? activeLink : undefined}>Kerj Sama</NavLink>

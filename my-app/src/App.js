@@ -32,7 +32,7 @@ function App() {
         <Route path="/home" element={<Home />}></Route>
         <Route path="/detail-event" element={<DetailE />}></Route>
         <Route path="/blog/:slug" element={<DetailB />}></Route>
-        <Route path="/blog" element={<DaftarB />}></Route>
+        <Route path="/daftar-blog" element={<DaftarB />}></Route>
       </Routes>
     </BrowserRouter>
 

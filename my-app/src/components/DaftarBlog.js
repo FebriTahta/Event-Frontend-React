@@ -3,13 +3,14 @@ import { useEffect, useState } from "react";
 import Header from '../common/Header';
 import Footer from '../common/Footer';
 import Skeleton from './Skeleton';
+import BlogP from "./BlogPagination";
 import { useNavigate } from "react-router-dom";
 import '../daftarblog.css';
 
 
 function DaftarB() {
 
-    const ApiBlog = "https://event.coffinashop.com/api/daftar-blog";
+    const ApiBlog = "https://event.coffinashop.com/api/daftar-blog?page=1";
     const PopularBlog = "https://event.coffinashop.com/api/popular-blog";
     const [isLoading, setIsLoading] = useState(true);
     const [blogs, setBlogs] = useState([]);
@@ -43,6 +44,14 @@ function DaftarB() {
         navigate(`/blog/${slug}`);
     }
 
+    const noBlog = () => {
+        return (
+            <div>
+                <h5>Belum Ada Blog / Tulisan</h5>
+            </div>
+        )
+    }
+
     return (
         <div>
             <Header />
@@ -68,68 +77,65 @@ function DaftarB() {
                         <div className="col-lg-8 col-sm-12 sticky-widget">
                             <div className="post-item-wrapper">
                                 <div className="row">
+
                                     {isLoading ? (
                                         <Skeleton type="custom" style={{ paddingTop: "100px" }} />
                                     ) : (
+
                                         blogs.data.map((a, i) => {
-
-                                            if (a.news_title.length < 45) {
-                                                return <div className="col-md-6" key={i} >
-                                                    <div className="post-item" style={{ boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px' }}>
-                                                        <div className="post-thumb-1" >
-                                                            <a href="#" onClick={()=>handleGoToDetailNews(a.news_slug)}><img src={a.image} style={{ borderTopLeftRadius: "10px", borderTopRightRadius: "10px" }} alt="blog" /></a>
-                                                        </div>
-                                                        <div className="post-content" >
-                                                            <a href="#" onClick={()=>handleGoToDetailNews(a.news_slug)} className="cata-icon">
-                                                                <i className="fas fa-image" />
-                                                            </a>
-                                                            <a href="#" onClick={()=>handleGoToDetailNews(a.news_slug)} style={{ marginTop: "15px" }}>
-                                                                <h5>{a.news_title}</h5>
-                                                            </a>
-                                                            <div className="meta-post" >
-                                                                <span className="by">Posted By <a className="name" href="#">{a.username}</a> at <a className="date" href="#">{a.created_at}</a></span>
+                                            if (!a) {
+                                                return noBlog();
+                                            }else{
+                                                if (a.news_title.length < 45) {
+                                                    return <div className="col-md-6" key={i} >
+                                                        <div className="post-item" style={{ boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px' }}>
+                                                            <div className="post-thumb-1" >
+                                                                <a href="#" onClick={()=>handleGoToDetailNews(a.news_slug)}><img src={a.thumbnail} style={{ borderTopLeftRadius: "10px", borderTopRightRadius: "10px" }} alt="blog" /></a>
+                                                            </div>
+                                                            <div className="post-content" >
+                                                                <a href="#" onClick={()=>handleGoToDetailNews(a.news_slug)} className="cata-icon">
+                                                                    <i className="fas fa-image" />
+                                                                </a>
+                                                                <a href="#" onClick={()=>handleGoToDetailNews(a.news_slug)} style={{ marginTop: "15px" }}>
+                                                                    <h5>{a.news_title}</h5>
+                                                                </a>
+                                                                <div className="meta-post" >
+                                                                    <span className="by">Posted By <a className="name" href="#">{a.username}</a> at <a className="date" href="#">{a.created_at}</a></span>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            }else {
-                                                return <div className="col-md-6" key={i} >
-                                                    <div className="post-item" style={{ boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px' }}>
-                                                        <div className="post-thumb-1" >
-                                                            <a href="#" onClick={()=>handleGoToDetailNews(a.news_slug)}><img src={a.image} style={{ borderTopLeftRadius: "10px", borderTopRightRadius: "10px" }} alt="blog" /></a>
-                                                        </div>
-                                                        <div className="post-content" >
-                                                            <a href="#" onClick={()=>handleGoToDetailNews(a.news_slug)} className="cata-icon">
-                                                                <i className="fas fa-image" />
-                                                            </a>
-                                                            <a href="#" onClick={()=>handleGoToDetailNews(a.news_slug)} style={{ marginTop: "15px" }}>
-                                                                <h5>{a.news_title.substring(0 , 45)}...</h5>
-                                                            </a>
-                                                            <div className="meta-post" >
-                                                                <span className="by">Posted By <a className="name" href="#">{a.username}</a> at <a className="date" href="#">{a.created_at}</a></span>
+                                                }else {
+                                                    return <div className="col-md-6" key={i} >
+                                                        <div className="post-item" style={{ boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px' }}>
+                                                            <div className="post-thumb-1" >
+                                                                <a href="#" onClick={()=>handleGoToDetailNews(a.news_slug)}><img src={a.image} style={{ borderTopLeftRadius: "10px", borderTopRightRadius: "10px" }} alt="blog" /></a>
+                                                            </div>
+                                                            <div className="post-content" >
+                                                                <a href="#" onClick={()=>handleGoToDetailNews(a.news_slug)} className="cata-icon">
+                                                                    <i className="fas fa-image" />
+                                                                </a>
+                                                                
+                                                                <a href="#" onClick={()=>handleGoToDetailNews(a.news_slug)} style={{ marginTop: "15px" }}>
+                                                                    <h5>{a.news_title.substring(0 , 45)}...</h5>
+                                                                </a>
+                                                                <div className="meta-post" >
+                                                                    <span className="by">Posted By <a className="name" href="#">{a.username}</a> at <a className="date" href="#">{a.created_at}</a></span>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                }
                                             }
-
 
                                         })
                                     )}
 
 
                                 </div>
-                                <div className="pagination-area d-flex flex-wrap justify-content-center">
-                                    <ul className="pagination d-flex flex-wrap m-0">
-                                        <li className="prev"><a href="#"><span>« previous</span></a></li>
-                                        <li><a href="#">1</a></li>
-                                        <li><a href="#" className="active d-none d-md-block">2</a></li>
-                                        <li><a href="#" className="d-none d-md-block">3</a></li>
-                                        <li className="dot">....</li>
-                                        <li><a href="#" className="d-none d-md-block">4</a></li>
-                                        <li className="next"><a href="#"><span>next »</span></a></li>
-                                    </ul>
-                                </div>
+                                {/* Blog Pagination */}
+                                <BlogP data={blogs} />
+
                             </div>
                         </div>
                         <div className="col-lg-4 clo-sm-12">
@@ -189,7 +195,7 @@ function DaftarB() {
                                                         pops.map((a, i) => {
                                                             return <div key={i} className="comment-list d-flex">
                                                             <div className="cm-icon" style={{ maxHeight:"120px" }}>
-                                                                <img style={{ height:"70px", minWidth:"100px" }} src={a.thumbnail} alt="blog" />
+                                                                <img style={{ height:"70px", minWidth:"100px", borderRadius:"5px" }} src={a.thumbnail} alt="blog" />
                                                             </div>
                                                             <div className="cm-text" style={{ lineHeight:"17px" }}>
                                                                 <span style={{ fontSize:"13px" }}>{a.news_title}</span>
@@ -197,8 +203,6 @@ function DaftarB() {
                                                         </div>
                                                         })
                                                     }
-                                                    
-                                                    
                                                 </div>
                                             </div>
                                         </div>
