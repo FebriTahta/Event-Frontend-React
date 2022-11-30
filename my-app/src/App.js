@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom"
 import DetailE from "./components/DetailEvent";
 import DetailB from "./components/DetailBlog";
 import DaftarB from "./components/DaftarBlog";
+import BlogT from './components/BlogTag';
 import Home from "./components/Home";
 import React from 'react';
 
@@ -28,11 +29,12 @@ function App() {
    
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/blog" replace />}></Route>
+        <Route path="/" element={<Navigate to="/daftar-blog" replace />}></Route>
         <Route path="/home" element={<Home />}></Route>
         <Route path="/detail-event" element={<DetailE />}></Route>
         <Route path="/blog/:slug" element={<DetailB />}></Route>
         <Route path="/daftar-blog" element={<DaftarB />}></Route>
+        <Route path="/blog-tag/:tag_slug" element={<BlogT />}></Route>
       </Routes>
     </BrowserRouter>
 

@@ -12,47 +12,36 @@ import { useParams } from "react-router-dom";
 function DetailB() {
 
     const PopularBlog = "https://event.coffinashop.com/api/popular-blog";
-    const [pops, setPopular] = useState([]);
-    const [news, setNews] = useState([]);
+    const [simi, setSimilar] = useState([]);
     const [blog, setBlog] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
     const { slug } = useParams();
 
-    useEffect(() => {
-        fetch(`https://event.coffinashop.com/api/blog/${slug}`)
-            .then((response) => response.json())
-            .then((data) => {
-                setBlog(data.data);
-            })
-            .catch((err) => console.log(err));
-        console.log(blog);
-        daftarNews();
-        daftarPopulerBlog();
+    useEffect(() => {    
+        thisBlog(slug); 
     }, [slug]);
 
-    const daftarNews = async () => {
+    const thisBlog = async (slug) => {
+        const data = await fetch(`https://event.coffinashop.com/api/blog/${slug}`);
+        const response = await data.json();
+        setBlog(response.data);
+        daftarSimilarBlog(response.data.tag_id, response.data.id);
+    }
+
+    const daftarSimilarBlog = async (tag_id, $id) => {
         setIsLoading(true);
         try {
-            const data2 = await fetch("https://nurulfalah.org/api/list-berita2");
-            const datas = await data2.json();
-            setNews(datas.data);
-        } catch (err) { }
+            const response = await fetch(`https://event.coffinashop.com/api/similar-blog/${tag_id}/${$id}`);
+            const data = await response.json();
+            setSimilar(data.data);
+        } catch (error) { }
         setIsLoading(false);
     }
 
-    const daftarPopulerBlog = async () => {
-        const data = await fetch(PopularBlog);
-        const response = await data.json();
-        setPopular(response.data);
-    }
-
     const handleGoToDetailNews = (slug) => {
-        console.log(slug);
         navigate(`/blog/${slug}`);
     }
-
-    
 
 
     // render() {
@@ -129,7 +118,10 @@ function DetailB() {
                     <div className="section-wraper">
 
                         {
-                            pops.map((a, i) => {
+                            isLoading ? (
+                                <Skeleton type="custom" style={{ paddingTop: "100px" }} />
+                            ) : (
+                            simi.map((a, i) => {
 
                                 if (a.news_title.length < 30) {
                                     return <div className="event-venue-item" key={i} style={{ marginBottom: "10px" }}>
@@ -170,7 +162,7 @@ function DetailB() {
                                     </div>
                                 }
                             })
-                        }
+                        )}
                     </div>
                 </div>
             </section>

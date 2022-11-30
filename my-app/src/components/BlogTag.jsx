@@ -6,11 +6,12 @@ import Skeleton from './Skeleton';
 import BlogP from "./BlogPagination";
 import { useNavigate } from "react-router-dom";
 import '../daftarblog.css';
+import { useParams } from "react-router-dom";
 
 
-function DaftarB() {
-
-    const ApiBlog = "https://event.coffinashop.com/api/daftar-blog?page=1";
+function BlogT() {
+    const { tag_slug } = useParams();
+    // const ApiBlog = `https://event.coffinashop.com/api/daftar-blog/tag/${tag_slug}?page=1`;
     const PopularBlog = "https://event.coffinashop.com/api/popular-blog";
     const ApiTagBlog = "https://event.coffinashop.com/api/tag-blog"
     const [isLoading, setIsLoading] = useState(true);
@@ -20,18 +21,19 @@ function DaftarB() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        daftarBlogs();
+        daftarBlogs(tag_slug);
         daftarPopulerBlog();
         daftarTagBlog();
-    }, []);
+        
+    }, [tag_slug]);
 
-    const daftarBlogs = async () => {
+    const daftarBlogs = async (tag_slug) => {
         setIsLoading(true);
         try {
-            const data = await fetch(ApiBlog);
+            const data = await fetch(`https://event.coffinashop.com/api/daftar-blog/tag/${tag_slug}?page=1`);
             const response = await data.json();
-            setBlogs(response.data);
-
+            setBlogs(response);
+            console.log(blogs);
         } catch (err) { }
         setIsLoading(false);
     }
@@ -43,6 +45,7 @@ function DaftarB() {
     }
 
     const handleGoToDetailNews = (slug) => {
+        console.log(slug);
         navigate(`/blog/${slug}`);
     }
 
@@ -89,7 +92,7 @@ function DaftarB() {
                                 <div className="page-title" id="hero-heading-blog" style={{ marginTop: "30px" }}>
                                     <span className="title-text" id="text-heading-blog-cover"><span style={{ fontSize: "70px" }} id="text-heading-blog">Blog Info Lomba Official</span></span>
                                 </div>
-                                <p className="title-text" style={{ fontSize: "20px", marginTop: "20px" }} id="text-heading-blog2">Daftar Blog / Artikel</p>
+                                <p className="title-text" style={{ fontSize: "20px", marginTop: "20px", textTransform:"capitalize" }} id="text-heading-blog2">Daftar Blog / Artikel / {blogs.tag}</p>
                             </div>
                         </div>
                     </div>
@@ -107,7 +110,7 @@ function DaftarB() {
                                         <Skeleton type="custom" style={{ paddingTop: "100px" }} />
                                     ) : (
 
-                                        blogs.data.map((a, i) => {
+                                        blogs.data.data.map((a, i) => {
                                             if (!a) {
                                                 return noBlog();
                                             } else {
@@ -302,4 +305,4 @@ function DaftarB() {
 
 }
 
-export default DaftarB
+export default BlogT
