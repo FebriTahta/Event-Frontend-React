@@ -237,7 +237,7 @@ function BlogT() {
 
                                                                 <div className="cm-icon" style={{ maxHeight: "120px" }}>
                                                                     <a href="#" onClick={() => handleGoToDetailNews(a.news_slug)}>
-                                                                        <img style={{ height: "70px", minWidth: "100px", borderRadius: "5px" }} src={a.thumbnail} alt="blog" />
+                                                                        <img style={{ height: "70px", maxWidth: "100px", borderRadius: "5px" }} src={a.thumbnail} alt="blog" />
                                                                     </a>
                                                                 </div>
                                                                 <div className="cm-text" style={{ lineHeight: "17px" }}>

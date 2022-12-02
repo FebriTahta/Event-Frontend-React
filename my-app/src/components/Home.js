@@ -13,36 +13,45 @@ import axios from 'axios';
 // class Home extends Component {
 function Home() {
 
-    // const [event, setEvent] = useState([]);
+    const [event, setEvent] = useState([]);
     const [news, setNews] = useState([]);
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        // daftarEvent();
-        daftarNews();
+        daftarEvent();
+        // daftarNews();
     }, []);
 
     // const daftarEvent = async () => {
-    //     const data = await fetch("http://127.0.0.1:8000/api/daftar-event-api");
+    //     const data = await fetch("https://event.coffinashop.com/api/daftar-event-api");
     //     const dataEvents = await data.json();
-    //     console.log(dataEvents);
     //     setEvent(dataEvents.data);
+    //     console.log(news);
     // };
 
-    const daftarNews = async () => {
-        // return await axios
-        //     .get("https://nurulfalah.org/api/list-berita2")
-        //     .then((response) => setNews(response.data))
-        //     .catch((err) => console.log(err))
+    const daftarEvent = async () => {
         setIsLoading(true);
         try {
-        const data2 = await fetch("https://nurulfalah.org/api/list-berita2");
-        const datas = await data2.json();
-        setNews(datas.data);
-        } catch (err) {}
+            const data = await fetch("https://event.coffinashop.com/api/daftar-event-api");
+            const response = await data.json();
+            setEvent(response.data);
+
+        } catch (err) { }
         setIsLoading(false);
+        console.log(event);
     }
+
+    // const daftarNews = async () => {
+    //     setIsLoading(true);
+    //     try {
+    //     const data2 = await fetch("https://event.coffinashop.com/api/daftar-event-api");
+    //     const datas = await data2.json();
+    //     setNews(datas.data);
+    //     } catch (err) {}
+    //     console.log(event);
+    //     setIsLoading(false);
+    // }
 
     const handleGoToDetailNews = (slug) => {
         console.log(slug);
@@ -95,61 +104,67 @@ function Home() {
 
 
 
-                                    {/* {event.map((dataEvents) => {
-                                        if (dataEvents.event_name.length < 30) {
-                                            return <div className="col-md-4 col-6" key={dataEvents.id} style={{ marginBottom: "50px", }}>
-                                                <div className="post-item" >
-                                                    <div className="post-thumb" style={{ boxShadow: "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px" }}>
-                                                        <a href="#"><img src={'http://127.0.0.1:8000/storage/event_image/' + dataEvents.event_image} alt="blog" /></a>
-                                                    </div>
-                                                    <div className="post-content" style={{ boxShadow: "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px", borderEndEndRadius: "10px", borderEndStartRadius: "10px" }}>
-                                                        <ul className="post-catagory">
-                                                            {dataEvents.kategori.map((dataKategori, index) => {
-                                                                return <span className="badge badge-danger" key={index} style={{ marginRight: "5px", padding: "5px" }}>{dataKategori.kategori_name}</span>
-                                                            })}
-                                                        </ul>
-                                                        <a href="#" style={{ marginTop: "10px" }}>
-                                                            <h5 style={{ lineHeight: "22px", fontSize: "16px" }}>
-                                                                {dataEvents.event_name}
-                                                                <br /><br /><br />
-                                                            </h5>
+                                    {
+                                        isLoading ? (
+                                            <Skeleton type="custom" style={{ paddingTop: "100px" }} />
+                                        ) : (
+                                            event.data.map((item, i) => {
+                                               
+                                                if (item.event_name.length < 30) {
+                                                    return <div className="col-md-4 col-6" key={i} style={{ marginBottom: "50px", }}>
+                                                        <div className="post-item" >
+                                                            <div className="post-thumb" style={{ boxShadow: "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px" }}>
+                                                                <a href="#"><img src={item.image} alt="blog" /></a>
+                                                            </div>
+                                                            <div className="post-content" style={{ boxShadow: "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px", borderEndEndRadius: "10px", borderEndStartRadius: "10px" }}>
+                                                                <ul className="post-catagory">
+                                                                    {dataEvents.kategori.map((dataKategori, index) => {
+                                                                        return <span className="badge badge-danger" key={index} style={{ marginRight: "5px", padding: "5px" }}>{dataKategori.kategori_name}</span>
+                                                                    })}
+                                                                </ul>
+                                                                <a href="#" style={{ marginTop: "10px" }}>
+                                                                    <h5 style={{ lineHeight: "22px", fontSize: "16px" }}>
+                                                                        {dataEvents.event_name}
+                                                                        <br /><br /><br />
+                                                                    </h5>
 
-                                                        </a>
-                                                        <div style={{ fontSize: "12px", margin: "0", padding: "0" }}>
-                                                            {dataEvents.event_source} <br /> {dataEvents.event_rank} | {dataEvents.event_deadline}
+                                                                </a>
+                                                                <div style={{ fontSize: "12px", margin: "0", padding: "0" }}>
+                                                                    {dataEvents.event_source} <br /> {dataEvents.event_rank} | {dataEvents.event_deadline}
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
 
-                                        } else {
-                                            return <div className="col-md-4 col-6" key={dataEvents.id} style={{ marginBottom: "50px", }}>
-                                                <div className="post-item" >
-                                                    <div className="post-thumb" style={{ boxShadow: "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px" }}>
-                                                        <a href="#"><img src={'http://127.0.0.1:8000/storage/event_image/' + dataEvents.event_image} alt="blog" /></a>
-                                                    </div>
-                                                    <div className="post-content" style={{ boxShadow: "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px", borderEndEndRadius: "10px", borderEndStartRadius: "10px" }}>
-                                                        <ul className="post-catagory">
-                                                            {dataEvents.kategori.map((dataKategori, index) => {
-                                                                return <span className="badge badge-danger" key={index} style={{ marginRight: "5px", padding: "5px" }}>{dataKategori.kategori_name}</span>
-                                                            })}
-                                                        </ul>
-                                                        <a style={{ marginTop: "10px", padding: "0" }}>
-                                                            <h5 style={{ lineHeight: "22px", fontSize: "16px" }}>
-                                                                {dataEvents.event_name.substring(0, 60)}..
-                                                            </h5>
-                                                            <br />
-                                                        </a>
+                                                } else {
+                                                    return <div className="col-md-4 col-6" key={dataEvents.id} style={{ marginBottom: "50px", }}>
+                                                        <div className="post-item" >
+                                                            <div className="post-thumb" style={{ boxShadow: "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px" }}>
+                                                                <a href="#"><img src={'http://127.0.0.1:8000/storage/event_image/' + dataEvents.event_image} alt="blog" /></a>
+                                                            </div>
+                                                            <div className="post-content" style={{ boxShadow: "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px", borderEndEndRadius: "10px", borderEndStartRadius: "10px" }}>
+                                                                <ul className="post-catagory">
+                                                                    {dataEvents.kategori.map((dataKategori, index) => {
+                                                                        return <span className="badge badge-danger" key={index} style={{ marginRight: "5px", padding: "5px" }}>{dataKategori.kategori_name}</span>
+                                                                    })}
+                                                                </ul>
+                                                                <a style={{ marginTop: "10px", padding: "0" }}>
+                                                                    <h5 style={{ lineHeight: "22px", fontSize: "16px" }}>
+                                                                        {dataEvents.event_name.substring(0, 60)}..
+                                                                    </h5>
+                                                                    <br />
+                                                                </a>
 
-                                                        <div style={{ fontSize: "12px", margin: "0", padding: "0" }}>
-                                                            {dataEvents.event_source} <br /> {dataEvents.event_rank} | {dataEvents.event_deadline}
+                                                                <div style={{ fontSize: "12px", margin: "0", padding: "0" }}>
+                                                                    {dataEvents.event_source} <br /> {dataEvents.event_rank} | {dataEvents.event_deadline}
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        }
+                                                }
 
-                                    })} */}
+                                            })
+                                        )}
                                 </div>
                             </div>
                         </div>
@@ -195,7 +210,7 @@ function Home() {
                     </div>
                     <div className="section-wraper">
 
-                        { isLoading ? (
+                        {/* { isLoading ? (
                             <Skeleton type="custom" />
                         ) : (    
                         news.map((a, i) => {
@@ -239,7 +254,7 @@ function Home() {
                                 </div>
                             }
                         })
-                        )}
+                        )} */}
                     </div>
                 </div>
             </section>
@@ -300,7 +315,7 @@ function Home() {
             </div>
             <Footer />
         </div >
-        
+
     )
 
 
