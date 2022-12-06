@@ -6,11 +6,7 @@ import '../skeleton.css';
 import Header from '../common/Header';
 import Footer from '../common/Footer';
 import Skeleton from './Skeleton';
-import axios from 'axios';
-// import BlockEvent from '../item/BlockEvent';
-// import FilterHomeKategori from '../item/FilterHomeKategori';
 
-// class Home extends Component {
 function Home() {
 
     const [event, setEvent] = useState([]);
@@ -20,15 +16,22 @@ function Home() {
 
     useEffect(() => {
         daftarEvent();
-        // daftarNews();
+        daftarNews();
+
     }, []);
 
-    // const daftarEvent = async () => {
-    //     const data = await fetch("https://event.coffinashop.com/api/daftar-event-api");
-    //     const dataEvents = await data.json();
-    //     setEvent(dataEvents.data);
-    //     console.log(news);
-    // };
+    const fetchPages = async (currnetPage) => {
+        const response = await fetch(`https://event.coffinashop.com/api/daftar-event-api?page=${currnetPage}`);
+        const data = await response.json();
+        return data.data;
+    }
+
+    const onPageChange = async (changepage) => {
+        console.log(changepage);
+        const targetEvent = await fetchPages(changepage);
+
+        setEvent(targetEvent);
+    }
 
     const daftarEvent = async () => {
         setIsLoading(true);
@@ -39,125 +42,99 @@ function Home() {
 
         } catch (err) { }
         setIsLoading(false);
-        console.log(event);
     }
 
-    // const daftarNews = async () => {
-    //     setIsLoading(true);
-    //     try {
-    //     const data2 = await fetch("https://event.coffinashop.com/api/daftar-event-api");
-    //     const datas = await data2.json();
-    //     setNews(datas.data);
-    //     } catch (err) {}
-    //     console.log(event);
-    //     setIsLoading(false);
-    // }
+    const daftarNews = async () => {
+        const data2 = await fetch("https://event.coffinashop.com/api/newest-blog");
+        const datas = await data2.json();
+        setNews(datas.data);
+    }
 
     const handleGoToDetailNews = (slug) => {
-        console.log(slug);
-        navigate(`/news/${slug}`);
+        navigate(`/blog/${slug}`);
     }
 
-
+    const next = event.next_page_url;
+    const prev = event.prev_page_url;
+    const last = event.last_page;
     return (
         <div>
             <Header />
-            <div className="page-header-section post-title style-1" style={{ backgroundImage: "url(bg3.png)", backgroundColor: "white" }} >
-                <div className="overlay" >
+            <div className="page-header-section post-title style-1" >
+                <div className="overlay" style={{ backgroundColor: "white" }}>
                     <div className="page-header-content">
                         <div className="container container-1310">
-                            <div className="page-header-content-inner" style={{ marginBottom: "20px" }}>
-                                <div className="page-title" style={{ marginTop: "80px" }}>
-                                    <span className="title-text">Info Lomba <span>Official</span></span>
+                            <div className="page-header-content-inner">
+                                <div className="page-title" id="hero-heading-blog" >
+                                    <span className="title-text" id="text-heading-blog-cover"><span id="text-heading-blog">Info Lomba Official</span></span>
                                 </div>
-                                <ol className="breadcrumb">
-                                    <li><a href="#">Bersama Kami</a></li>
-                                    <li>Platform Terbesar Seputar Informasi Lomba di Seluruh Wilayah Indonesia</li>
-                                </ol>
-                                <div className="row">
-                                    <div className="col-md-4"></div>
-                                    <div className="col-md-4">
-                                        <div className="page-title" style={{ marginTop: "20px", textAlign: "center" }}>
-                                            <span className="title-text">
-                                                <form >
-                                                    <input className="form-control" name="search" style={{ maxWidth: "400px" }} />
-                                                </form>
+                                <p className="title-text" id="text-heading-blog2">Cari Lombamu Disini</p>
+                            </div>
 
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-4"></div>
+                            <div className="page-header-content-inner">
+                                <div className="card-search">
+                                    <input type="text" className="form-control" style={{ backgroundColor: 'rgb(228, 228, 228)', borderRadius: '20px' }} placeholder=" Search . . ." />
                                 </div>
-
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <section className="blog-section padding-tb" >
+            <section className="blog-section" >
                 <div className="container container-1310">
                     <div className="row">
                         <div className="col-lg-12 clo-sm-12 sticky-widget">
                             <div className="post-item-wrapper">
                                 <div className="row">
 
-
-
                                     {
                                         isLoading ? (
                                             <Skeleton type="custom" style={{ paddingTop: "100px" }} />
                                         ) : (
                                             event.data.map((item, i) => {
-                                               
-                                                if (item.event_name.length < 30) {
-                                                    return <div className="col-md-4 col-6" key={i} style={{ marginBottom: "50px", }}>
+
+                                                if (item.event_name.length < 20) {
+                                                    return <div className="col-md-4 col-sm-6 col-6" key={item.id} style={{ marginBottom: "50px", }}>
                                                         <div className="post-item" >
                                                             <div className="post-thumb" style={{ boxShadow: "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px" }}>
-                                                                <a href="#"><img src={item.image} alt="blog" /></a>
+                                                                <a href="#"><img style={{ borderTopLeftRadius: "10px", borderTopRightRadius: "10px" }} src={item.thumbnail} alt="blog" /></a>
                                                             </div>
                                                             <div className="post-content" style={{ boxShadow: "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px", borderEndEndRadius: "10px", borderEndStartRadius: "10px" }}>
-                                                                <ul className="post-catagory">
-                                                                    {dataEvents.kategori.map((dataKategori, index) => {
-                                                                        return <span className="badge badge-danger" key={index} style={{ marginRight: "5px", padding: "5px" }}>{dataKategori.kategori_name}</span>
+                                                                <ul className="post-catagory" style={{ marginBottom: "10px" }}>
+                                                                    {item.kategori.map((dataKategori, index) => {
+                                                                        return <span className="badge badge-danger d-none" key={index} style={{ marginRight: "5px", padding: "5px" }}>{dataKategori.kategori_name}</span>
                                                                     })}
                                                                 </ul>
-                                                                <a href="#" style={{ marginTop: "10px" }}>
-                                                                    <h5 style={{ lineHeight: "22px", fontSize: "16px" }}>
-                                                                        {dataEvents.event_name}
-                                                                        <br /><br /><br />
-                                                                    </h5>
 
+                                                                <a style={{ marginTop: "10px", padding: "0" }}>
+                                                                    <h5 style={{ lineHeight: "22px", fontSize: "18px" }}>
+                                                                        {item.event_name} <br /><br />
+                                                                    </h5>
                                                                 </a>
-                                                                <div style={{ fontSize: "12px", margin: "0", padding: "0" }}>
-                                                                    {dataEvents.event_source} <br /> {dataEvents.event_rank} | {dataEvents.event_deadline}
-                                                                </div>
+                                                                <p style={{ fontSize: "13px", lineHeight: "20px" }}><span className="hide">{item.event_source}</span> <br /><span className="hide">Deadline :</span>  {item.event_deadline}</p>
                                                             </div>
                                                         </div>
                                                     </div>
 
                                                 } else {
-                                                    return <div className="col-md-4 col-6" key={dataEvents.id} style={{ marginBottom: "50px", }}>
+                                                    return <div className="col-md-4 col-sm-6 col-6" key={item.id} style={{ marginBottom: "50px", }}>
                                                         <div className="post-item" >
                                                             <div className="post-thumb" style={{ boxShadow: "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px" }}>
-                                                                <a href="#"><img src={'http://127.0.0.1:8000/storage/event_image/' + dataEvents.event_image} alt="blog" /></a>
+                                                                <a href="#"><img style={{ borderTopLeftRadius: "10px", borderTopRightRadius: "10px" }} src={item.thumbnail} alt="blog" /></a>
                                                             </div>
                                                             <div className="post-content" style={{ boxShadow: "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px", borderEndEndRadius: "10px", borderEndStartRadius: "10px" }}>
-                                                                <ul className="post-catagory">
-                                                                    {dataEvents.kategori.map((dataKategori, index) => {
+                                                                <ul className="post-catagory" style={{ marginBottom: "10px" }}>
+                                                                    {item.kategori.map((dataKategori, index) => {
                                                                         return <span className="badge badge-danger" key={index} style={{ marginRight: "5px", padding: "5px" }}>{dataKategori.kategori_name}</span>
                                                                     })}
                                                                 </ul>
                                                                 <a style={{ marginTop: "10px", padding: "0" }}>
-                                                                    <h5 style={{ lineHeight: "22px", fontSize: "16px" }}>
-                                                                        {dataEvents.event_name.substring(0, 60)}..
+                                                                    <h5 style={{ lineHeight: "22px", fontSize: "18px" }}>
+                                                                        {item.event_name.substring(0, 20)}..
                                                                     </h5>
-                                                                    <br />
                                                                 </a>
-
-                                                                <div style={{ fontSize: "12px", margin: "0", padding: "0" }}>
-                                                                    {dataEvents.event_source} <br /> {dataEvents.event_rank} | {dataEvents.event_deadline}
-                                                                </div>
+                                                                <p style={{ fontSize: "13px", lineHeight: "20px" }}><span className="hide">{item.event_source}</span> <br /><span className="hide">Deadline :</span>  {item.event_deadline}</p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -169,17 +146,23 @@ function Home() {
                             </div>
                         </div>
                     </div>
-                    <div className="pagination-area d-flex bg-ash flex-wrap justify-content-center">
-                        <ul className="pagination d-flex flex-wrap m-0">
-                            <li className="prev"><a href="#"><span>« previous</span></a></li>
-                            <li><a href="#">1</a></li>
-                            <li><a href="#" className="active d-none d-md-block">2</a></li>
-                            <li><a href="#" className="d-none d-md-block">3</a></li>
-                            <li className="dot">....</li>
-                            <li><a href="#" className="d-none d-md-block">4</a></li>
-                            <li className="next"><a href="#"><span>next »</span></a></li>
-                        </ul>
-                    </div>
+
+                    {
+                        last > 1 ?
+                            <div className="pagination-area d-flex bg-ash flex-wrap justify-content-center">
+                                <ul className="pagination d-flex flex-wrap m-0">
+                                    {prev && <li className="prev"><a href="#" onClick={() => onPageChange(event.current_page - 1)}><span>« previous</span></a></li>}
+                                    {/* <li><a href="#">1</a></li> */}
+                                    <li><a href="#" className="active d-none d-md-block">{event.current_page}</a></li>
+                                    {/* <li><a href="#" className="d-none d-md-block">3</a></li>
+                                    <li className="dot">....</li>
+                                    <li><a href="#" className="d-none d-md-block">4</a></li> */}
+                                    {next && <li className="next"><a href="#" onClick={() => onPageChange(event.current_page + 1)}><span>next »</span></a></li>}
+                                </ul>
+                            </div>
+                            : null
+                    }
+
                 </div>
             </section>
 
@@ -210,51 +193,49 @@ function Home() {
                     </div>
                     <div className="section-wraper">
 
-                        {/* { isLoading ? (
-                            <Skeleton type="custom" />
-                        ) : (    
-                        news.map((a, i) => {
+                        {
+                            news.map((a, i) => {
 
-                            if (a.judul.length < 30) {
-                                return <div className="event-venue-item" key={i} style={{ marginBottom: "10px" }}>
-                                    <div className="event-venue-item-inner" style={{ boxShadow: "rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px", borderRadius: "10px" }}>
-                                        <div className="row">
-                                            <div className="col-md-4 col-4" style={{ marginRight: "0", paddingRight: "0" }}>
-                                                <div className="event-venue-thumb" style={{ borderTopLeftRadius: "10px", borderBottomLeftRadius: "10px" }}>
-                                                    <a href="#" onClick={()=>handleGoToDetailNews(a.slug)}><img src="assets/images/venue/03.png" alt="venue" style={{ height: "100%" }} /></a>
+                                if (a.news_title.length < 30) {
+                                    return <div className="event-venue-item" key={i} style={{ marginBottom: "10px" }}>
+                                        <div className="event-venue-item-inner" style={{ boxShadow: "rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px", borderRadius: "10px" }}>
+                                            <div className="row">
+                                                <div className="col-md-4 col-4" style={{ marginRight: "0", paddingRight: "0" }}>
+                                                    <div className="event-venue-thumb" style={{ borderTopLeftRadius: "10px", borderBottomLeftRadius: "10px" }}>
+                                                        <a href="#" onClick={() => handleGoToDetailNews(a.news_slug)}><img src={a.thumbnail} alt="venue" /></a>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div className="col-md-8 col-8" style={{ marginLeft: "0", paddingLeft: "10px" }}>
-                                                <div className="event-venue-content" style={{ marginTop: "0", paddingTop: "0" }}>
-                                                    <a href="#" onClick={()=>handleGoToDetailNews(a.slug)} style={{ padding: "0", margin: "0" }}><h5 style={{ fontSize: "20px" }} className="judul-blog">{a.judul}</h5></a>
-                                                    <span style={{ fontSize: "14px", padding: "0", margin: "0" }}>By admin</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                            else {
-                                return <div className="event-venue-item" key={i} style={{ marginBottom: "10px" }}>
-                                    <div className="event-venue-item-inner" style={{ boxShadow: "rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px", borderRadius: "10px" }}>
-                                        <div className="row">
-                                            <div className="col-md-4 col-4" style={{ marginRight: "0", paddingRight: "0" }}>
-                                                <div className="event-venue-thumb" style={{ borderTopLeftRadius: "10px", borderBottomLeftRadius: "10px" }}>
-                                                    <a href="#" onClick={()=>handleGoToDetailNews(a.slug)}><img src="assets/images/venue/03.png" alt="venue" style={{ height: "100%" }} /></a>
-                                                </div>
-                                            </div>
-                                            <div className="col-md-8 col-8" style={{ marginLeft: "0", paddingLeft: "10px" }}>
-                                                <div className="event-venue-content" style={{ marginTop: "0", paddingTop: "0" }}>
-                                                    <a href="#" onClick={()=>handleGoToDetailNews(a.slug)} style={{ padding: "0", margin: "0" }}><h5 style={{ fontSize: "20px" }} className="judul-blog">{a.judul.substring(0, 35)}..</h5></a>
-                                                    <span style={{ fontSize: "14px", padding: "0", margin: "0" }}>By admin</span>
+                                                <div className="col-md-8 col-8" style={{ marginLeft: "0", paddingLeft: "10px" }}>
+                                                    <div className="event-venue-content" style={{ marginTop: "0", paddingTop: "0" }}>
+                                                        <a href="#" onClick={() => handleGoToDetailNews(a.slug)} style={{ padding: "0", margin: "0" }}><h5 className="judul-blog">{a.news_title}</h5></a>
+                                                        <span style={{ fontSize: "14px", padding: "0", margin: "0" }}>By {a.username}</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            }
-                        })
-                        )} */}
+                                }
+                                else {
+                                    return <div className="event-venue-item" key={i} style={{ marginBottom: "10px" }}>
+                                        <div className="event-venue-item-inner" style={{ boxShadow: "rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px", borderRadius: "10px" }}>
+                                            <div className="row">
+                                                <div className="col-md-4 col-4" style={{ marginRight: "0", paddingRight: "0" }}>
+                                                    <div className="event-venue-thumb" style={{ borderTopLeftRadius: "10px", borderBottomLeftRadius: "10px" }}>
+                                                        <a href="#" onClick={() => handleGoToDetailNews(a.news_slug)}><img src={a.thumbnail} alt="venue" /></a>
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-8 col-8" style={{ marginLeft: "0", paddingLeft: "10px" }}>
+                                                    <div className="event-venue-content" style={{ marginTop: "0", paddingTop: "0" }}>
+                                                        <a href="#" onClick={() => handleGoToDetailNews(a.news_slug)} style={{ padding: "0", margin: "0" }}><h5 style={{ fontSize: "20px" }} className="judul-blog">{a.news_title.substring(0, 35)}..</h5></a>
+                                                        <span style={{ fontSize: "14px", padding: "0", margin: "0" }}>By {a.username}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            })
+                        }
                     </div>
                 </div>
             </section>

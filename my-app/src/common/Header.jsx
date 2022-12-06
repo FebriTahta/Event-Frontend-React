@@ -94,7 +94,7 @@ class Header extends Component {
                                 <div className="container container-1310">
                                     <div className="menu-area">
                                         <div className="row no-gutters justify-content-between align-items-center">
-                                            <a href="index.html" className="logo">
+                                            <a href="#" className="logo">
                                                 <img src={Logo} style={{maxWidth:"200px"}} alt="logo"/>
                                                     <img src={Logo} style={{maxWidth:"200px"}} alt="logo"/>
                                                     </a>

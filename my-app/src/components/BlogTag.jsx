@@ -3,15 +3,14 @@ import { useEffect, useState } from "react";
 import Header from '../common/Header';
 import Footer from '../common/Footer';
 import Skeleton from './Skeleton';
-import BlogP from "./BlogPagination";
 import { useNavigate } from "react-router-dom";
 import '../daftarblog.css';
+import { NavLink } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
 
 function BlogT() {
     const { tag_slug } = useParams();
-    // const ApiBlog = `https://event.coffinashop.com/api/daftar-blog/tag/${tag_slug}?page=1`;
     const PopularBlog = "https://event.coffinashop.com/api/popular-blog";
     const ApiTagBlog = "https://event.coffinashop.com/api/tag-blog"
     const [isLoading, setIsLoading] = useState(true);
@@ -24,7 +23,7 @@ function BlogT() {
         daftarBlogs(tag_slug);
         daftarPopulerBlog();
         daftarTagBlog();
-        
+        // console.log(daftarBlogs(tag_slug));
     }, [tag_slug]);
 
     const daftarBlogs = async (tag_slug) => {
@@ -42,7 +41,7 @@ function BlogT() {
         const data = await fetch(PopularBlog);
         const response = await data.json();
         setPopular(response.data);
-    }
+    } 
 
     const handleGoToDetailNews = (slug) => {
         console.log(slug);
@@ -72,13 +71,11 @@ function BlogT() {
         setTags(response.data);
     }
 
-    const noBlog = () => {
-        return (
-            <div>
-                <h5>Belum Ada Blog / Tulisan</h5>
-            </div>
-        )
-    }
+
+    const prev = blogs.prev_page_url;
+    const next = blogs.next_page_url;
+    const last = blogs.last_page;
+    const slug = blogs.tag;
 
     return (
         <div>
@@ -89,10 +86,10 @@ function BlogT() {
                     <div className="page-header-content">
                         <div className="container container-1310">
                             <div className="page-header-content-inner">
-                                <div className="page-title" id="hero-heading-blog" style={{ marginTop: "30px" }}>
-                                    <span className="title-text" id="text-heading-blog-cover"><span style={{ fontSize: "70px" }} id="text-heading-blog">Blog Info Lomba Official</span></span>
+                                <div className="page-title" id="hero-heading-blog">
+                                    <span className="title-text" id="text-heading-blog-cover"><span id="text-heading-blog">Blog Info Lomba Official</span></span>
                                 </div>
-                                <p className="title-text" style={{ fontSize: "20px", marginTop: "20px", textTransform:"capitalize" }} id="text-heading-blog2">Daftar Blog / Artikel / {blogs.tag}</p>
+                                <p className="title-text" style={{ textTransform: "capitalize" }} id="text-heading-blog2">Daftar Blog / Artikel / {blogs.tag}</p>
                             </div>
                         </div>
                     </div>
@@ -112,9 +109,9 @@ function BlogT() {
 
                                         blogs.data.data.map((a, i) => {
                                             if (!a) {
-                                                return noBlog();
+
                                             } else {
-                                                if (a.news_title.length < 40) {
+                                                if (a.news_title.length < 35) {
                                                     return <div className="col-md-6" key={i} >
                                                         <div className="post-item" style={{ boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px' }}>
                                                             <div className="post-thumb-1" >
@@ -145,7 +142,7 @@ function BlogT() {
                                                                 </a>
 
                                                                 <a href="#" onClick={() => handleGoToDetailNews(a.news_slug)} style={{ marginTop: "15px" }}>
-                                                                    <h5>{a.news_title.substring(0, 40)}...</h5>
+                                                                    <h5>{a.news_title.substring(0, 35)}...</h5>
                                                                 </a>
                                                                 <div className="meta-post" >
                                                                     <span className="by">Posted By <a className="name" href="#">{a.username}</a> at <a className="date" href="#">{a.created_at}</a></span>
@@ -162,19 +159,21 @@ function BlogT() {
 
                                 </div>
                                 {/* <BlogP data={blogs} /> */}
+                                {
+                                    last > 0 ? <div className="pagination-area d-flex flex-wrap justify-content-center">
+                                        <ul className="pagination d-flex flex-wrap m-0">
+                                            <li className="prev"><a href="#" onClick={() => onPageChange(blogs.current_page - 1)}><span>« previous</span></a></li>
 
-                                <div className="pagination-area d-flex flex-wrap justify-content-center">
-                                    <ul className="pagination d-flex flex-wrap m-0">
-                                        <li className="prev"><a href="#" onClick={() => onPageChange(blogs.current_page - 1)}><span>« previous</span></a></li>
-
-                                        <li><a href="#" className="active d-md-block">{blogs.current_page}</a></li>
-                                        {/* <li><a href="#" className="d-none d-md-block">2</a></li>
+                                            <li><a href="#" className="active d-md-block">{blogs.current_page}</a></li>
+                                            {/* <li><a href="#" className="d-none d-md-block">2</a></li>
                                     <li><a href="#" className="d-none d-md-block">3</a></li>
                                     <li className="dot">....</li>
                                     <li><a href="#" className="d-none d-md-block">4</a></li> */}
-                                        <li className="next"><a href="#" onClick={() => onPageChange(blogs.current_page + 1)}><span>next »</span></a></li>
-                                    </ul>
-                                </div>
+                                            <li className="next"><a href="#" onClick={() => onPageChange(blogs.current_page + 1)}><span>next »</span></a></li>
+                                        </ul>
+                                    </div> : ''
+                                }
+
 
                             </div>
                         </div>
@@ -182,13 +181,15 @@ function BlogT() {
                             <div className="get-sidebar">
                                 <div className="sidebar-item no-gutters justify-content-center">
                                     <div className="sidebar-header" style={{ marginBottom: 0, paddingBottom: 0 }}>
-                                        <h6>Cari Informasi</h6>
+                                        <h6>Back To Articles</h6>
                                     </div>
                                     <div className="sidebar-inner" style={{ marginTop: 0, paddingTop: 0, marginBottom: 0, paddingBottom: 0 }}>
                                         <div className="sidebar-wrapper">
-                                            <form>
-                                                <input type="text" className="form-control" style={{ backgroundColor: 'rgb(228, 228, 228)', borderRadius: '20px' }} placeholder=" Search . . ." />
-                                            </form>
+                                            {/* <input type="text" 
+                                                className="form-control" style={{ backgroundColor: 'rgb(228, 228, 228)', borderRadius: '20px' }} placeholder=" Search . . ." />
+                                             */}
+                                            <NavLink to="/daftar-blog" type="button" style={{ backgroundColor:"#fd3d6b", width:"100%",color:"white", textAlign:"center"
+                                            ,padding:"5px", borderRadius:"10px" }}>BACK</NavLink>
                                         </div>
                                     </div>
                                 </div>
@@ -275,24 +276,13 @@ function BlogT() {
                                     <div className="sidebar-inner">
                                         <a href="#" type="button" style={{ backgroundColor: 'rgb(42, 149, 236)', padding: '20px', borderRadius: '15px', color: 'white' }}>
                                             <div className="row">
-                                                <div className="col-md-3"><i className="fab fa-telegram" style={{ fontSize: '70px' }} /></div>
-                                                <div className="col-md-9"> Bergabung bersama dengan para Pencari Info Lomba di Channel Telegram Kami</div>
+                                                <div className="col-md-4 col-4"><i className="fab fa-telegram" style={{ fontSize: '70px' }} /></div>
+                                                <div className="col-md-8 col-8"><span className="text-telegram">Bergabung bersama dengan para Pencari Info Lomba di Channel Telegram Kami</span></div>
                                             </div>
                                         </a>
                                     </div>
                                 </div>
-                                <div className="sidebar-item  sc-two no-gutters">
-                                    <div className="sidebar-inner">
-                                        <div className="sidebar-wrapper">
-                                            <div className="sidebar-thumb">
-                                                <img src="assets/images/sidebar/02.jpg" alt="sidebar" />
-                                                <div className="sidebar-content">
-                                                    <h5>Sponsor</h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                
                             </div>
                         </div>
                     </div>

@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import Header from '../common/Header';
 import Footer from '../common/Footer';
 import Skeleton from './Skeleton';
-import BlogP from "./BlogPagination";
 import { useNavigate } from "react-router-dom";
 import '../daftarblog.css';
 
@@ -23,6 +22,7 @@ function DaftarB() {
         daftarBlogs();
         daftarPopulerBlog();
         daftarTagBlog();
+
     }, []);
 
     const daftarBlogs = async () => {
@@ -57,10 +57,20 @@ function DaftarB() {
     }
 
     const onPageChange = async (changepage) => {
-        console.log(changepage);
         const daftarBlogs = await fetchPages(changepage);
-
         setBlogs(daftarBlogs);
+    }
+
+    const fetchSearch = async (resultSearch) => {
+        const response = await fetch(`https://event.coffinashop.com/api/search-blog/${resultSearch}`);
+        const data = await response.json();
+        return data.data;
+    }
+
+   
+    const onSearch = async (search) => {
+        const daftarBlogSearch = await fetchSearch(search);
+        setBlogs(daftarBlogSearch);
     }
 
     const daftarTagBlog = async () => {
@@ -69,13 +79,10 @@ function DaftarB() {
         setTags(response.data);
     }
 
-    const noBlog = () => {
-        return (
-            <div>
-                <h5>Belum Ada Blog / Tulisan</h5>
-            </div>
-        )
-    }
+
+    const prev = blogs.prev_page_url;
+    const next = blogs.next_page_url;
+    const last = blogs.last_page;
 
     return (
         <div>
@@ -86,10 +93,10 @@ function DaftarB() {
                     <div className="page-header-content">
                         <div className="container container-1310">
                             <div className="page-header-content-inner">
-                                <div className="page-title" id="hero-heading-blog" style={{ marginTop: "30px" }}>
-                                    <span className="title-text" id="text-heading-blog-cover"><span style={{ fontSize: "70px" }} id="text-heading-blog">Blog Info Lomba Official</span></span>
+                                <div className="page-title" id="hero-heading-blog" >
+                                    <span className="title-text" id="text-heading-blog-cover"><span id="text-heading-blog">Blog Info Lomba Official</span></span>
                                 </div>
-                                <p className="title-text" style={{ fontSize: "20px", marginTop: "20px" }} id="text-heading-blog2">Daftar Blog / Artikel</p>
+                                <p className="title-text" id="text-heading-blog2">Daftar Blog / Artikel</p>
                             </div>
                         </div>
                     </div>
@@ -106,12 +113,9 @@ function DaftarB() {
                                     {isLoading ? (
                                         <Skeleton type="custom" style={{ paddingTop: "100px" }} />
                                     ) : (
-
-                                        blogs.data.map((a, i) => {
-                                            if (!a) {
-                                                return noBlog();
-                                            } else {
-                                                if (a.news_title.length < 40) {
+                                        blogs ?
+                                            blogs.data.map((a, i) => {
+                                                if (a.news_title.length < 35) {
                                                     return <div className="col-md-6" key={i} >
                                                         <div className="post-item" style={{ boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px' }}>
                                                             <div className="post-thumb-1" >
@@ -125,6 +129,7 @@ function DaftarB() {
                                                                     <h5>{a.news_title}</h5>
                                                                 </a>
                                                                 <div className="meta-post" >
+                                                                    <p style={{ padding:0, margin: 0 }}>Dibaca : {a.news_views}</p>
                                                                     <span className="by">Posted By <a className="name" href="#">{a.username}</a> at <a className="date" href="#">{a.created_at}</a></span>
                                                                 </div>
                                                             </div>
@@ -142,36 +147,41 @@ function DaftarB() {
                                                                 </a>
 
                                                                 <a href="#" onClick={() => handleGoToDetailNews(a.news_slug)} style={{ marginTop: "15px" }}>
-                                                                    <h5>{a.news_title.substring(0, 40)}...</h5>
+                                                                    <h5>{a.news_title.substring(0, 35)}...</h5>
                                                                 </a>
                                                                 <div className="meta-post" >
+                                                                    <p style={{ padding:0, margin: 0 }}>Dibaca : {a.news_views}</p>
                                                                     <span className="by">Posted By <a className="name" href="#">{a.username}</a> at <a className="date" href="#">{a.created_at}</a></span>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 }
-                                            }
 
-                                        })
+                                            }
+                                            ) : null
                                     )}
 
 
                                 </div>
                                 {/* <BlogP data={blogs} /> */}
+                                {
+                                    last > 1 ? <div className="pagination-area d-flex flex-wrap justify-content-center">
+                                        <ul className="pagination d-flex flex-wrap m-0">
+                                            {prev && <li className="prev"><a href="#" onClick={() => onPageChange(blogs.current_page - 1)}><span>« previous</span></a></li>}
 
-                                <div className="pagination-area d-flex flex-wrap justify-content-center">
-                                    <ul className="pagination d-flex flex-wrap m-0">
-                                        <li className="prev"><a href="#" onClick={() => onPageChange(blogs.current_page - 1)}><span>« previous</span></a></li>
+                                            <li><a href="#" className="active d-md-block">{blogs.current_page}</a></li>
+                                            {/* <li><a href="#" className="d-none d-md-block">2</a></li>
+                                   <li><a href="#" className="d-none d-md-block">3</a></li>
+                                   <li className="dot">....</li>
+                                   <li><a href="#" className="d-none d-md-block">4</a></li> */}
+                                            <li><a href="#" className="d-none d-md-block">{blogs.label}</a></li>
+                                            {next && <li className="next"><a href="#" onClick={() => onPageChange(blogs.current_page + 1)}><span>next »</span></a></li>}
 
-                                        <li><a href="#" className="active d-md-block">{blogs.current_page}</a></li>
-                                        {/* <li><a href="#" className="d-none d-md-block">2</a></li>
-                                    <li><a href="#" className="d-none d-md-block">3</a></li>
-                                    <li className="dot">....</li>
-                                    <li><a href="#" className="d-none d-md-block">4</a></li> */}
-                                        <li className="next"><a href="#" onClick={() => onPageChange(blogs.current_page + 1)}><span>next »</span></a></li>
-                                    </ul>
-                                </div>
+                                        </ul>
+                                    </div> : null
+                                }
+
 
                             </div>
                         </div>
@@ -183,9 +193,8 @@ function DaftarB() {
                                     </div>
                                     <div className="sidebar-inner" style={{ marginTop: 0, paddingTop: 0, marginBottom: 0, paddingBottom: 0 }}>
                                         <div className="sidebar-wrapper">
-                                            <form>
-                                                <input type="text" className="form-control" style={{ backgroundColor: 'rgb(228, 228, 228)', borderRadius: '20px' }} placeholder=" Search . . ." />
-                                            </form>
+                                            <input type="text" onChange={(e) => onSearch(e.target.value)}
+                                                className="form-control" style={{ backgroundColor: 'rgb(228, 228, 228)', borderRadius: '20px' }} placeholder=" Search . . ." />
                                         </div>
                                     </div>
                                 </div>
@@ -272,24 +281,13 @@ function DaftarB() {
                                     <div className="sidebar-inner">
                                         <a href="#" type="button" style={{ backgroundColor: 'rgb(42, 149, 236)', padding: '20px', borderRadius: '15px', color: 'white' }}>
                                             <div className="row">
-                                                <div className="col-md-3"><i className="fab fa-telegram" style={{ fontSize: '70px' }} /></div>
-                                                <div className="col-md-9"> Bergabung bersama dengan para Pencari Info Lomba di Channel Telegram Kami</div>
+                                                <div className="col-md-4 col-4"><i className="fab fa-telegram" style={{ fontSize: '70px' }} /></div>
+                                                <div className="col-md-8 col-8"><span className="text-telegram">Bergabung bersama dengan para Pencari Info Lomba di Channel Telegram Kami</span></div>
                                             </div>
                                         </a>
                                     </div>
                                 </div>
-                                <div className="sidebar-item  sc-two no-gutters">
-                                    <div className="sidebar-inner">
-                                        <div className="sidebar-wrapper">
-                                            <div className="sidebar-thumb">
-                                                <img src="assets/images/sidebar/02.jpg" alt="sidebar" />
-                                                <div className="sidebar-content">
-                                                    <h5>Sponsor</h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                
                             </div>
                         </div>
                     </div>

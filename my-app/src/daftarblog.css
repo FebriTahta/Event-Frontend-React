@@ -4,3 +4,49 @@
     object-fit: cover;
 }
 
+/* daftar blog */
+@media screen and (min-width: 700px) {
+    #text-heading-blog {
+      font-size: 45px !important;
+    }
+  
+    #text-heading-blog2 {
+      margin-top: -5px !important;
+    }
+  
+    #text-heading-blog-cover {
+      line-height: 40px !important;
+    }
+    
+    #hero-heading-blog {
+      margin-top: -210px !important;
+    }
+  
+    .blog-section {
+      margin-top: -250px !important;
+    }
+
+    .page-header-section {
+        margin-top: 100px !important;
+    }
+
+    .text-telegram {
+        font-size: 12px !important;
+        line-height: 20px !important;
+    }
+  }
+
+  @media screen and (max-width: 699px) {
+    .page-header-section {
+        margin-top: -150px !important;
+    }
+
+    .blog-section {
+        margin-top: -150px !important;
+    }
+
+    .text-telegram {
+        font-size: 12px !important;
+        line-height: 20px !important;
+    }
+  }
